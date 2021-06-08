@@ -27,6 +27,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let dict = self.comingSoonViewModel.resultData.results[indexPath.row]
         cell.name.text = dict.artistName
         cell.myTitle.text = dict.name
+        
+        let url = URL.init(string:dict.url)
+        cell.myImage.sd_setImage(with: url , placeholderImage: UIImage(named: "default.png"))
+        
         return cell
         
     }

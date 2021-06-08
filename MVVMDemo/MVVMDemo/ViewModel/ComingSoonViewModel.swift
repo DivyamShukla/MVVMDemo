@@ -8,7 +8,6 @@
 import Foundation
 class ComingSoonViewModel : NSObject{
  
-    var ComingSoon = Array<Result>()
     var gen = Array<Genre>()
     
     
@@ -25,9 +24,6 @@ class ComingSoonViewModel : NSObject{
             callAPI()
         }
 
-        func numberOfRowsInSection() -> Int {
-            return ComingSoon.count
-        }
     
     func callAPI(){
         
@@ -38,7 +34,28 @@ class ComingSoonViewModel : NSObject{
                 if let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
                     
                     if let feeds = json["feed"] as? Dictionary<String, Any> {
-                        print(feeds)
+                        if let results = feeds["results"] as? Array<[String:Any]>{
+                            var comingSoon = [Result]()
+                            for result in results{
+                                
+                                var genres = [Genre]()
+                                
+                                if let genre = result["genres"] as? Array<[String: String]>{
+                                    for gen in genre{
+                                        let name = gen["name"]
+                                        let url = gen["url"]
+                                        genres.append(Genre(name: name ?? "", image_url: url ?? ""))
+                                        
+                                    }
+                                }
+                                
+                                let artistName = result["artistName"] as? String
+                                let imageUrl = result["artworkUrl100"] as? String
+                                let resultName = result["name"] as? String
+                                comingSoon.append(Result(name: artistName ?? ""  , title: resultName ?? "" , image_url: imageUrl ?? "", genre: genres))   
+                            }
+                            self.resultData = Results(resultArray: comingSoon)
+                        }
                     }
                 }
             } catch let error as NSError {
