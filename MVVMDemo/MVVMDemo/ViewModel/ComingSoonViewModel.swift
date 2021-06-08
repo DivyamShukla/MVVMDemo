@@ -7,23 +7,20 @@
 
 import Foundation
 class ComingSoonViewModel : NSObject{
- 
-    var gen = Array<Genre>()
-    
     
     private(set) var resultData : Results! {
-            didSet {
-                self.bindResultsViewModelToController()
-            }
+        didSet {
+            self.bindResultsViewModelToController()
         }
+    }
     
     var bindResultsViewModelToController : (() -> ()) = {}
     
     override init() {
-            super.init()
-            callAPI()
-        }
-
+        super.init()
+        callAPI()
+    }
+    
     
     func callAPI(){
         
@@ -61,8 +58,8 @@ class ComingSoonViewModel : NSObject{
             } catch let error as NSError {
                 print("Failed to load: \(error.localizedDescription)")
             }
-                        
-            }
+            
+        }
         
     }
 }
